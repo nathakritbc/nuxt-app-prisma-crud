@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import CreateDialogComponent from "~/components/products/CreateDialog.vue";
+import DeleteDialogComponent from "~/components/products/DeleteDialog.vue";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
-import { createDialog } from "~/hooks/products.js";
+import {
+  createDialog,
+  deleteDialog,
+  // deleteItemDialog,
+} from "~/hooks/products.js";
 import { onMounted, ref } from "vue";
 const toast = useToast();
 const { name } = useDisplay();
@@ -57,12 +62,17 @@ const createItem = () => {
   createDialog.value = true;
 };
 
+const deleteItem = (item: Product) => {
+  const { p_id, p_name } = item;
+  // deleteItemDialog.value = { p_id, p_name };
+  console.log(p_id);
+  deleteDialog.value = true;
+};
+
 onMounted(() => {
   fetchAllProducts();
 });
-watchEffect(() => {
- 
-});
+watchEffect(() => {});
 </script>
 
 <template>
@@ -70,11 +80,16 @@ watchEffect(() => {
     <v-card>
       <v-card-title>
         <section
-          class="w-full flex flex-col md:flex-row align-start md:align-center justify-between"
+          class="w-full flex flex-col md:flex-row align-start md:align-center justify-between py-6"
         >
-          <h1 class="text-2xl font-semibold">Products</h1> 
+          <h1 class="text-2xl text-primary font-bold">Products</h1>
           <ClientOnly>
-            <v-btn class="" :block="name === 'xs'" @click="createItem()"
+            <v-btn
+              append-icon="mdi-plus"
+              class=""
+              color="primary"
+              :block="name === 'xs'"
+              @click="createItem()"
               >เพิ่มสินค้า</v-btn
             >
           </ClientOnly>
@@ -83,7 +98,7 @@ watchEffect(() => {
       <v-card-text>
         <v-text-field
           lable="ค้นหา"
-           density="compact"
+          density="compact"
           v-model="search"
           append-inner-icon="mdi-magnify"
           variant="outlined"
@@ -131,6 +146,7 @@ watchEffect(() => {
       </v-card-text>
     </v-card>
     <CreateDialogComponent />
+    <DeleteDialogComponent />
   </div>
 </template>
 

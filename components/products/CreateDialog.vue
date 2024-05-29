@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
-const dialog = ref(false);
+import { ref, defineProps } from "vue"; 
 import { createDialog } from "~/hooks/products.js";
 </script>
 <template>
