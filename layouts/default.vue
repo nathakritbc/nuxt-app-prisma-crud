@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { useDisplay } from "vuetify";
 const drawer = ref(true);
 const rail = ref(false);
+const { name } = useDisplay();
+watchEffect(() => {
+  rail.value = false;
+  if (name.value == "xs" || name.value == "sm") {
+    rail.value = true;
+  }
+});
 </script>
 
 <template>
@@ -52,7 +61,7 @@ const rail = ref(false);
       </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary">
-      <template v-slot:prepend>
+      <template v-slot:prepend v-if="name === 'xs'">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
       </template>
 
