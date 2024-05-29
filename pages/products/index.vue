@@ -1,49 +1,63 @@
-<script lang="ts" setup>
-const items: any = ref([]);
+<script setup lang="ts">
+import CreateDialog from "~/components/products/CreateDialog.vue";
+import { useToast } from "vue-toastification";
+import { onMounted, ref } from "vue";
+const toast = useToast();
+const search = ref("");
+const selected = ref([]);
 const headers = ref([
   {
-    text: "Id",
-    align: "start",
-    value: "id",
-  },
-  {
-    text: "Title",
-    align: "start",
-    value: "title",
+    title: "ชื่อสินค้า",
+    key: "p_name",
+    align: "end",
   },
 ]);
+const products = ref([]);
 
-const { data: todoData, error } = await useFetch("/api/todos");
+const getColor = (num: number) => {
+  if (num > 100) return "red";
+  if (num > 50) return "orange";
+  return "green";
+};
 
-const getTodos = async () => {
+const fetchAllProducts = async () => {
   try {
-    const dataPost = await $fetch("/api/todos");
-    // items.value = dataPost;
-    console.log(dataPost);
-    console.log("getTodos");
+    products.value = await $fetch("/api/products");
   } catch (error) {
     console.error(error);
+    toast.error("Fetch all products failed!");
   }
 };
-// const dataList = await asyncData();
 onMounted(() => {
-  getTodos();
+  fetchAllProducts();
 });
 </script>
 
+<style scoped></style>
+
 <template>
-  <v-container>
-    <h1>{{ todoData }}</h1>
-    <ol v-if="todoData">
-      <li v-for="item in todoData" :key="item.id">{{ item.title }}</li>
-    </ol>
-    <!-- <h1>{{ dataList }}</h1> -->
-    <v-btn>Btn</v-btn>
-    <!-- <v-data-table
-      :headers="headers"
-      :items="items"
-      item-key="name"
-      items-per-page="5"
-    ></v-data-table> -->
-  </v-container>
+  <div>
+    <v-card>
+      <v-card-title>
+        <h1 class="text-2xl font-semibold">Products</h1>
+      </v-card-title>
+
+      <v-card-text>
+        <v-text-field
+          lable="ค้นหา"
+          v-model="search"
+          append-inner-icon="mdi-magnify"
+        ></v-text-field>
+        <v-data-table
+          :search="search"
+          :headers="headers"
+          v-model="selected"
+          :items="products"
+          item-value="name"
+          show-select
+        ></v-data-table>
+      </v-card-text>
+    </v-card>
+    <CreateDialog />
+  </div>
 </template>

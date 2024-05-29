@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const drawer = ref(true);
-const rail = ref(true);
+const rail = ref(false);
 </script>
 
 <template>
