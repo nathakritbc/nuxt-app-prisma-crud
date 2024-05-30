@@ -1,12 +1,19 @@
 <script setup lang="ts">
+import ShowDialogComponent from "~/components/products/ShowDialog.vue";
 import CreateDialogComponent from "~/components/products/CreateDialog.vue";
+import UpdateDialogComponent from "~/components/products/UpdateDialog.vue";
 import DeleteDialogComponent from "~/components/products/DeleteDialog.vue";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
 import {
   createDialog,
   deleteDialog,
-  // deleteItemDialog,
+  products,
+  deleteItemDialog,
+  updateItemDialog,
+  updateDialog,
+  showDialog,
+  showItemDialog,
 } from "~/hooks/products.js";
 import { onMounted, ref } from "vue";
 const toast = useToast();
@@ -42,7 +49,6 @@ const headers = ref([
   },
   { title: "Actions", key: "actions", sortable: false },
 ]);
-const products = ref([]);
 
 const getColor = (num: number) => {
   if (num > 100) return "red";
@@ -51,24 +57,37 @@ const getColor = (num: number) => {
 };
 
 const fetchAllProducts = async () => {
+  loading.value = true;
   try {
     products.value = await $fetch("/api/products");
+    loading.value = false;
   } catch (error) {
+    loading.value = false;
     console.error(error);
     toast.error("Fetch all products failed!");
   }
 };
+
 const createItem = () => {
   createDialog.value = true;
 };
 
 const deleteItem = (item: Product) => {
   const { p_id, p_name } = item;
-  // deleteItemDialog.value = { p_id, p_name };
-  console.log(p_id);
+  deleteItemDialog.value = { p_id, p_name };
   deleteDialog.value = true;
 };
-
+const updateItem = (item: Product) => {
+  console.log("item", item);
+  const { p_id, p_name, p_price, p_amount } = item;
+  updateItemDialog.value = { p_id, p_name, p_price, p_amount };
+  updateDialog.value = true;
+};
+const showItem = (item: Product) => {
+  const { p_id, p_name, p_price, p_amount } = item;
+  showItemDialog.value = { p_id, p_name, p_price, p_amount };
+  showDialog.value = true;
+};
 onMounted(() => {
   fetchAllProducts();
 });
@@ -118,7 +137,7 @@ watchEffect(() => {});
                 class=""
                 size="small"
                 color="grey-darken-1"
-                @click="createItem()"
+                @click="showItem(item)"
               >
                 mdi-eye
               </v-icon>
@@ -126,7 +145,7 @@ watchEffect(() => {});
                 class="mx-3"
                 size="small"
                 color="grey-darken-1"
-                @click="editItem(item)"
+                @click="updateItem(item)"
               >
                 mdi-pencil
               </v-icon>
@@ -147,6 +166,8 @@ watchEffect(() => {});
     </v-card>
     <CreateDialogComponent />
     <DeleteDialogComponent />
+    <UpdateDialogComponent />
+    <ShowDialogComponent />
   </div>
 </template>
 
