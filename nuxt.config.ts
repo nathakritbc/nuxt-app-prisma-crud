@@ -15,10 +15,11 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+
+  plugins: ["~/plugins/toastification.ts"],
   build: {
-    transpile: ["vuetify"],
+    transpile: ["vuetify", "vue-toastification"],
   },
-  plugins: ["~/plugins/toastification"],
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) => {
