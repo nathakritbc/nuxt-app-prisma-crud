@@ -99,9 +99,9 @@ watchEffect(() => {});
     <v-card>
       <v-card-title>
         <section
-          class="w-full flex flex-col md:flex-row align-start md:align-center justify-between py-6"
+          class="w-full flex flex-col md:flex-row align-start md:align-center justify-between pb-1 py-md-6"
         >
-          <h1 class="text-2xl text-primary font-bold">Products</h1>
+          <h1 class="text-2xl text-primary font-bold pb-3 p3-md-0">รายการสินค้า</h1>
           <ClientOnly>
             <v-btn
               append-icon="mdi-plus"

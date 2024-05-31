@@ -71,7 +71,7 @@ watchEffect(() => {
           <v-card-text>
             <div class="flex flex-row align-center justify-center pt-6">
               <img
-                src="../../assets/images/add-product.png"
+                src="../../assets/images/edit.png"
                 alt="Add Product"
                 class="w-[200px]"
               />

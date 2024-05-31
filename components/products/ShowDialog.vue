@@ -26,7 +26,7 @@ watchEffect(() => {
         <v-card-text>
           <div class="flex flex-row align-center justify-center pt-6">
             <img
-              src="../../assets/images/add-product.png"
+              src="../../assets/images/shopping-bag.png"
               alt="Add Product"
               class="w-[200px]"
             />

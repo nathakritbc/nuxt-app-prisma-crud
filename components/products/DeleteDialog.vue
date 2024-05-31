@@ -41,7 +41,7 @@ const deleteProduct = async () => {
           <h1 class="text-xl mt-7 font-medium text-center">
             ลบสินค้ารายการไอดีที่
             <span class="font-semibold">{{ deleteItemDialog.p_id }}</span>
-            <span class="text-primary font-semibold ml-2">{{
+            <span class="text-error font-semibold ml-2">{{
               deleteItemDialog.p_name
             }}</span>
           </h1>
