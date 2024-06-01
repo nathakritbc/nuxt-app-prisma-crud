@@ -14,18 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  u_id        Int      @id @default(autoincrement())
-  u_full_name String
-  u_username  String   @unique
-  u_password  String   @db.Text
-  u_email     String   @unique
-  u_tel       String
-  u_profile   String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
 model Products {
   p_id      Int      @id @default(autoincrement())
   p_name    String
