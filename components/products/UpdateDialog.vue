@@ -10,12 +10,10 @@ const initForm: Product = {
   p_price: 0,
   p_amount: 0,
 };
-let formData: Product = reactive({
-  ...initForm,
-});
+let formData = ref(initForm);
 
 const clearForm = () => {
-  formData = { ...initForm };
+  formData.value = { ...initForm };
   formRef.value?.reset();
   updateDialog.value = false;
   updateItemDialog.value = { ...initForm, p_id: 0 };
@@ -30,9 +28,9 @@ const updateProduct = async () => {
       return;
     }
     const payload = {
-      p_name: formData.p_name,
-      p_price: Number(formData.p_price),
-      p_amount: Number(formData.p_amount),
+      p_name: formData.value.p_name,
+      p_price: Number(formData.value.p_price),
+      p_amount: Number(formData.value.p_amount),
     };
     const response: Product = await $fetch(`/api/products/${updateId.value}`, {
       method: "PUT",
@@ -60,78 +58,80 @@ const updateProduct = async () => {
 
 watchEffect(() => {
   updateId.value = updateItemDialog.value.p_id;
-  formData = { ...updateItemDialog.value };
+  formData.value = { ...updateItemDialog.value };
 });
 </script>
 <template>
   <div>
-    <v-dialog v-model="updateDialog" max-width="500" persistent>
-      <v-card class="  ">
-        <v-form ref="formRef" @submit.prevent="updateProduct">
-          <v-card-text>
-            <div class="flex flex-row align-center justify-center pt-6">
-              <img
-                src="../../assets/images/edit.png"
-                alt="Add Product"
-                class="w-[200px]"
-              />
-            </div>
-            <h1
-              class="text-3xl font-semibold text-warning text-center pb-4 pt-10"
-            >
-              เเก้ไขสินค้า
-            </h1>
-            <section class="mt-3">
-              <v-text-field
-                variant="outlined"
-                :rules="[(v) => !!v || 'กรุณากรอกชื่อสินค้า']"
-                v-model="formData.p_name"
-                name="name"
-                label="ชื่อสินค้า"
-                placeholder="กรอกชื่อสินค้า"
-                id="id"
-              ></v-text-field>
-              <v-text-field
-                class="mt-3"
-                variant="outlined"
-                v-model="formData.p_price"
-                :rules="[
-                  (v) => !!v || 'กรุณากรอกราคาสินค้า',
-                  (v) => v > 0 || 'กรุณากรอกราคาสินค้าให้ถูกต้อง',
-                ]"
-                label="ราคาสินค้า"
-                placeholder="กรอกราคาสินค้า"
-                type="number"
-                min="0"
-                id="id"
-              ></v-text-field>
-              <v-text-field
-                v-model="formData.p_amount"
-                class="mt-3"
-                variant="outlined"
-                name="name"
-                label="จำนวนสินค้า"
-                :rules="[
-                  (v) => !!v || 'กรุณากรอกจำนวนสินค้า',
-                  (v) => v > 0 || 'กรุณากรอกจำนวนสินค้าให้ถูกต้อง',
-                ]"
-                placeholder="กรอกจำนวนสินค้า"
-                type="number"
-                min="0"
-                id="id"
-              ></v-text-field>
-            </section>
-            <section class="flex flex-row align-center justify-end mt-4">
-              <div>
-                <v-btn variant="text" @click="clearForm"> ปิด </v-btn>
-                <v-btn variant="text" class="text-primary ml-3" type="submit">
-                  บันทึก
-                </v-btn>
+    <ClientOnly>
+      <v-dialog v-model="updateDialog" max-width="500" persistent>
+        <v-card class="  ">
+          <v-form ref="formRef" @submit.prevent="updateProduct">
+            <v-card-text>
+              <div class="flex flex-row align-center justify-center pt-6">
+                <img
+                  src="../../assets/images/edit.png"
+                  alt="Add Product"
+                  class="w-[200px]"
+                />
               </div>
-            </section>
-          </v-card-text>
-        </v-form>
-      </v-card>
-    </v-dialog>
+              <h1
+                class="text-3xl font-semibold text-warning text-center pb-4 pt-10"
+              >
+                เเก้ไขสินค้า
+              </h1>
+              <section class="mt-3">
+                <v-text-field
+                  variant="outlined"
+                  :rules="[(v) => !!v || 'กรุณากรอกชื่อสินค้า']"
+                  v-model="formData.p_name"
+                  name="name"
+                  label="ชื่อสินค้า"
+                  placeholder="กรอกชื่อสินค้า"
+                  id="id"
+                ></v-text-field>
+                <v-text-field
+                  class="mt-3"
+                  variant="outlined"
+                  v-model="formData.p_price"
+                  :rules="[
+                    (v) => !!v || 'กรุณากรอกราคาสินค้า',
+                    (v) => v > 0 || 'กรุณากรอกราคาสินค้าให้ถูกต้อง',
+                  ]"
+                  label="ราคาสินค้า"
+                  placeholder="กรอกราคาสินค้า"
+                  type="number"
+                  min="0"
+                  id="id"
+                ></v-text-field>
+                <v-text-field
+                  v-model="formData.p_amount"
+                  class="mt-3"
+                  variant="outlined"
+                  name="name"
+                  label="จำนวนสินค้า"
+                  :rules="[
+                    (v) => !!v || 'กรุณากรอกจำนวนสินค้า',
+                    (v) => v > 0 || 'กรุณากรอกจำนวนสินค้าให้ถูกต้อง',
+                  ]"
+                  placeholder="กรอกจำนวนสินค้า"
+                  type="number"
+                  min="0"
+                  id="id"
+                ></v-text-field>
+              </section>
+              <section class="flex flex-row align-center justify-end mt-4">
+                <div>
+                  <v-btn variant="text" @click="clearForm"> ปิด </v-btn>
+                  <v-btn variant="text" class="text-primary ml-3" type="submit">
+                    บันทึก
+                  </v-btn>
+                </div>
+              </section>
+            </v-card-text>
+          </v-form>
+        </v-card>
+      </v-dialog>
+    </ClientOnly>
   </div>
 </template>
