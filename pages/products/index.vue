@@ -1,6 +1,7 @@
 <script setup lang="ts">
 useHead({
   title: "จัดการรายการสินค้า",
+  
 });
 import ShowDialogComponent from "~/components/products/ShowDialog.vue";
 import CreateDialogComponent from "~/components/products/CreateDialog.vue";
